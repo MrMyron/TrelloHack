@@ -1,0 +1,175 @@
+﻿<!--<span class="hiddenSpellError" pre=""-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"> 
+	<title>TrelloHack</title>
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        // change board
+        function change_board(node)
+        {
+            var jnode = $(node);
+            var id = jnode.attr("data_id");
+            var name = jnode.text();
+            $("#travel").text(name);
+            window.location.href = "/home?bid=" + id + "&name=" + name;
+        }
+
+        // send button change
+        function change() {
+            if ($("#comment").text().length > 0) {
+                $("#send").attr("class", "btn btn-primary btn-sm");
+            }
+            else
+            {
+                $("#send").attr("class", "btn btn-primary btn-sm disabled");
+            }
+        }
+
+        function login() {
+            var name = $("#username").val();
+            $.ajax({
+                url: '/trello/auth?name=' + name,
+                type: 'GET', //GET
+                async: false,    //
+                timeout: 5000,    //
+                dataType: 'json',    //return data format:json/xml/html/script/jsonp/text
+                success: function (data, textStatus, jqXHR) {
+                    if (data.retcode < 0)
+                    {
+                        alert("login fail, please retry");
+                        return;
+                    }
+
+                    var url = data.url;
+                    window.location.href = url;        // redirect to trello authorize page
+                },
+                error: function (xhr, textStatus) {
+                    alert("get token from trello fail, please retry");
+                },
+                complete: function () {
+                }
+            })
+        }
+        //
+        function create_comment(comment, name, idx, time) {
+            var ele = $("#his_comment").clone();
+            ele.attr("style", "margin-left: 20px;display:block");
+
+            var id = ele.attr("id");
+            ele.attr("id", id + "_" + idx);
+
+            var nameid = $(" > p", ele).attr("id");
+            $(" > p", ele).attr("id", nameid + "_" + idx);
+            $(" > p", ele).text(name);
+
+            var textid = $(" > textarea", ele).attr("id");
+            $("> textarea", ele).attr("id", textid + "_" + idx);
+            $(" > textarea", ele).text(comment + "   " + time);
+
+            $("#comment_history").append(ele);
+        }
+        
+        // card button
+        function popup(node) {
+            var jnode = $(node);
+            var id = jnode.attr("data-id");
+            $("#myModalLabel").text(jnode.attr("data-name"));
+            $("#myModalLabel").attr("dataid", id);
+
+            $("#comment_history").remove();
+
+            var history = $('<div></div>');
+            history.attr('id', 'comment_history');
+
+            $("#moal_content").append(history);
+
+            $.ajax({
+                url: '/home/get_comments?cid='+id,
+                type: 'GET', //GET
+                async: false,    //
+                timeout: 5000,    //
+                dataType: 'text',    //return format：json/xml/html/script/jsonp/text
+                success: function (data, textStatus, jqXHR) {
+                    if (data.length > 0) {
+                        var strs = new Array();
+                        var str = data.replace(/(;*$)/g, "");
+                        strs = data.split(";");
+                        for (i = 0; i < strs.length ; i++) {
+                            if (strs[i].length <= 0) continue;
+                            var txt = new Array();
+                            txt = strs[i].split(",");
+                            var comment = txt[0];
+                            var name = txt[1];
+                            var time = txt[2];
+                            create_comment(comment, name, i, time);
+                        }
+                    }
+                },
+                error: function (xhr, textStatus) {
+                    alert("get comment fail");
+                },
+                complete: function () {
+                }
+            })
+
+            /*$.get("/home/get_comments", "cid="+id,
+                  function (data) {
+                      var strs = new Array();
+                      var str = data.replace(/(,*$)/g, "");
+                      strs=data.split(",");
+                      for (i = 0; i < strs.length ; i++) {
+                          var txt = new Array();
+                          txt = strs[i].split(":");
+                          var comment = txt[0];
+                          var name = txt[1];
+                          create_comment(comment, name, i);
+                      }
+                  });*/
+            $("#myModal").modal("show");
+        }
+
+        // send comment
+        function send() {
+            var id = $("#myModalLabel").attr("dataid");
+            var text = $("#comment").text();
+            $.ajax({
+                url: '/home/add_comment',
+                type: 'POST', //GET
+                async: true,    //
+                data: {
+                    cid: id,
+                    comment: text
+                },
+                timeout: 5000,    //
+                dataType: 'json',    //return format：json/xml/html/script/jsonp/text
+                success: function (data, textStatus, jqXHR) {
+
+                },
+                error: function (xhr, textStatus) {
+                    alert("add comment fail");
+                },
+                complete: function () {
+                }
+            });
+            $("#comment").text("");
+            $("#send").attr("class", "btn btn-primary btn-sm disabled");
+        }
+    </script>
+</head>
+<body>
+    <div>
+
+@RenderSection("featured", required: false)
+
+<div>
+ @RenderBody()
+    </div>
+
+    </div>
+</body>
+</html>

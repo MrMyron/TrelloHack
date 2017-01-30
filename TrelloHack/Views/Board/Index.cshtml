@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Boards";
+}
+
+@model IEnumerable<TrelloHack.Models.BoardInfo>
+
+@section featured {
+
+    <div class="btn-group">
+	    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width:200px; margin:10px;">Boards 
+		    <span class="caret"></span>
+	    </button>
+
+	    <ul class="dropdown-menu" role="menu">
+            @foreach (var item in Model)
+            {
+		        <li><a href="#" data_id="@item.info.Id" style="width:200px; margin:10px;" onclick="change_board(this);" id="travel">@item.info.Name</a></li>
+            }
+	    </ul>
+    </div>
+
+        @foreach (var item in Model)
+        {
+            <div>
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="change_board(this);" data_id="@item.info.Id" style="width:200px; float:left; margin:10px;height:100px">@item.info.Name</button>
+            </div>
+        }
+}

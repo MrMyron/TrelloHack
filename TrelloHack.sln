@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrelloHack", "TrelloHack\TrelloHack.csproj", "{D244ED3E-43B1-4871-B871-11B491BE26D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrelloTest", "TrelloTest\TrelloTest.csproj", "{1042521A-B5C1-48F9-A9A0-95B89562BDD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D244ED3E-43B1-4871-B871-11B491BE26D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D244ED3E-43B1-4871-B871-11B491BE26D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D244ED3E-43B1-4871-B871-11B491BE26D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D244ED3E-43B1-4871-B871-11B491BE26D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1042521A-B5C1-48F9-A9A0-95B89562BDD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1042521A-B5C1-48F9-A9A0-95B89562BDD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1042521A-B5C1-48F9-A9A0-95B89562BDD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1042521A-B5C1-48F9-A9A0-95B89562BDD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
